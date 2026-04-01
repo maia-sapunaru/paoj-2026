@@ -16,7 +16,7 @@ public class Main {
         }
 
         Arrays.sort(ingineri);
-        System.out.println("Ingineri sortati natural (dupa nume)");
+        System.out.println("Ingineri sortati (dupa nume)");
         for (Inginer ing : ingineri){
             System.out.println(ing);
         }
