@@ -1,6 +1,6 @@
 package com.pao.laboratory06.exercise2;
 
-public class PersoanaFizica extends Colaborator{
+public abstract class PersoanaFizica extends Colaborator{
     public PersoanaFizica(){
         super();
     }

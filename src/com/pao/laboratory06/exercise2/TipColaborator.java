@@ -1,5 +1,5 @@
 package com.pao.laboratory06.exercise2;
 
-public class TipColaborator {
+public enum TipColaborator {
     CIM, PFA, SRL;
 }
