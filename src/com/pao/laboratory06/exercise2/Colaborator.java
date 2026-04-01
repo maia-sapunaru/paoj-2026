@@ -48,6 +48,6 @@ public abstract class Colaborator implements IOperatiiCitireScriere{
 
     @Override
     public String toString(){
-        return String.format("%s: %s %s, venit anual %.2f lei", tipContract(), nume, prenume, calculeazaVenitNetAnual());
+        return String.format("%s: %s %s, venit net anual: %.2f lei", tipContract(), nume, prenume, calculeazaVenitNetAnual());
     }
 }
