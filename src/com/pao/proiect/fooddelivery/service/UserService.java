@@ -1,6 +1,6 @@
 package com.pao.proiect.fooddelivery.service;
 
-import com.pao.proiect.fooddelivery.exception.EntityNotFoundException;
+import com.pao.proiect.fooddelivery.exception.NotFoundException;
 import com.pao.proiect.fooddelivery.model.Client;
 import com.pao.proiect.fooddelivery.model.Driver;
 
@@ -43,7 +43,7 @@ public class UserService{
     public Client findClientById(int id){
         Client client = clientsById.get(id);
         if (client == null) {
-            throw new EntityNotFoundException("Clientul cu id " + id + " nu exista.");
+            throw new NotFoundException("Clientul cu id " + id + " nu exista.");
         }
         return client;
     }
@@ -51,7 +51,7 @@ public class UserService{
     public Driver findDriverById(int id){
         Driver driver = driversById.get(id);
         if (driver == null) {
-            throw new EntityNotFoundException("Soferul cu id " + id + " nu exista.");
+            throw new NotFoundException("Soferul cu id " + id + " nu exista.");
         }
         return driver;
     }
