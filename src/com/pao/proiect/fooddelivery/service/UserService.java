@@ -1,8 +1,8 @@
-package com.pao.project.fooddelivery.service;
+package com.pao.proiect.fooddelivery.service;
 
-import com.pao.project.fooddelivery.exception.EntityNotFoundException;
-import com.pao.project.fooddelivery.model.Client;
-import com.pao.project.fooddelivery.model.Driver;
+import com.pao.proiect.fooddelivery.exception.EntityNotFoundException;
+import com.pao.proiect.fooddelivery.model.Client;
+import com.pao.proiect.fooddelivery.model.Driver;
 
 import java.util.ArrayList;
 import java.util.HashMap;

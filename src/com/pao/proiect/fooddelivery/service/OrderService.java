@@ -1,14 +1,14 @@
-package com.pao.project.fooddelivery.service;
+package com.pao.proiect.fooddelivery.service;
 
-import com.pao.project.fooddelivery.exception.NotFoundException;
-import com.pao.project.fooddelivery.exception.MenuItemUnavailableException;
-import com.pao.project.fooddelivery.model.Client;
-import com.pao.project.fooddelivery.model.Driver;
-import com.pao.project.fooddelivery.model.MenuItem;
-import com.pao.project.fooddelivery.model.Order;
-import com.pao.project.fooddelivery.model.OrderItem;
-import com.pao.project.fooddelivery.model.OrderStatus;
-import com.pao.project.fooddelivery.model.Restaurant;
+import com.pao.proiect.fooddelivery.exception.NotFoundException;
+import com.pao.proiect.fooddelivery.exception.MenuItemUnavailableException;
+import com.pao.proiect.fooddelivery.model.Client;
+import com.pao.proiect.fooddelivery.model.Driver;
+import com.pao.proiect.fooddelivery.model.MenuItem;
+import com.pao.proiect.fooddelivery.model.Order;
+import com.pao.proiect.fooddelivery.model.OrderItem;
+import com.pao.proiect.fooddelivery.model.OrderStatus;
+import com.pao.proiect.fooddelivery.model.Restaurant;
 
 import java.util.ArrayList;
 import java.util.Comparator;

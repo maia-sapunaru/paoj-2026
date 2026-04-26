@@ -1,8 +1,8 @@
-package com.pao.project.fooddelivery.service;
+package com.pao.proiect.fooddelivery.service;
 
-import com.pao.project.fooddelivery.exception.EntityNotFoundException;
-import com.pao.project.fooddelivery.model.MenuItem;
-import com.pao.project.fooddelivery.model.Restaurant;
+import com.pao.proiect.fooddelivery.exception.NotFoundException;
+import com.pao.proiect.fooddelivery.model.MenuItem;
+import com.pao.proiect.fooddelivery.model.Restaurant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class RestaurantService{
     public Restaurant findRestaurantById(int id){
         Restaurant restaurant = restaurantsById.get(id);
         if (restaurant == null){
-            throw new EntityNotFoundException("Restaurantul cu id " + id + " nu exista.");
+            throw new NotFoundException("Restaurantul cu id " + id + " nu exista.");
         }
         return restaurant;
     }

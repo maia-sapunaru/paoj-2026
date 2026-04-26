@@ -1,4 +1,4 @@
-package com.pao.project.fooddelivery.model;
+package com.pao.proiect.fooddelivery.model;
 
 public class OrderItem{
     private MenuItem menuItem;

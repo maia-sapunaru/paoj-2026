@@ -1,4 +1,4 @@
-package com.pao.project.fooddelivery.model;
+package com.pao.proiect.fooddelivery.model;
 
 import java.util.ArrayList;
 import java.util.List;

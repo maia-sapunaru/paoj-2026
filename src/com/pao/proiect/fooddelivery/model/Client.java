@@ -1,4 +1,4 @@
-package com.pao.project.fooddelivery.model;
+package com.pao.proiect.fooddelivery.model;
 
 public class Client extends User{
     private DeliveryAddress address;

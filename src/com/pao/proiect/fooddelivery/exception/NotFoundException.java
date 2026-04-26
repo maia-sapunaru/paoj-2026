@@ -1,4 +1,4 @@
-package com.pao.project.fooddelivery.exception;
+package com.pao.proiect.fooddelivery.exception;
 
 public class NotFoundException extends RuntimeException{
     public NotFoundException(String message) {
