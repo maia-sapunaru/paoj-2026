@@ -123,7 +123,7 @@ public class Main {
             }
             System.out.println();
 
-            System.out.println("Produse sortate alfabetic (TreeSet)");
+            System.out.println("Produse sortate alfabetic");
             for (MenuItem item : restaurantService.getSortedMenuItems()) {
                 System.out.println(item);
             }
@@ -138,6 +138,13 @@ public class Main {
             );
 
         } catch (MenuItemUnavailableException | NotFoundException | IllegalArgumentException e) {
+            System.out.println("Eroare: " + e.getMessage());
+        }
+
+
+        try {
+            restaurantService.findRestaurantById(999);
+        } catch (NotFoundException e) {
             System.out.println("Eroare: " + e.getMessage());
         }
 
