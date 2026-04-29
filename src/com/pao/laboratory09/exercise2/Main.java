@@ -2,35 +2,53 @@ package com.pao.laboratory09.exercise2;
 
 import com.pao.laboratory09.exercise1.TipTranzactie;
 
-import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
-public class Main {
+public class Main{
     private static final String OUTPUT_FILE = "output/lab09_ex2.bin";
-    private static final int RECORD_SIZE = 32;
 
-    public static void main(String[] args) throws Exception {
-        // TODO: Implementează conform Readme.md
-        //
-        // 1. Citește N din stdin, apoi cele N tranzacții (id suma data tip)
-        // 2. Scrie toate înregistrările în OUTPUT_FILE cu DataOutputStream (format binar, RECORD_SIZE=32 bytes/înreg.)
-        //    - bytes 0-3:   id (int, little-endian via ByteBuffer)
-        //    - bytes 4-11:  suma (double, little-endian via ByteBuffer)
-        //    - bytes 12-21: data (String, 10 chars ASCII, paddat cu spații la dreapta)
-        //    - byte 22:     tip (0=CREDIT, 1=DEBIT)
-        //    - byte 23:     status (0=PENDING, 1=PROCESSED, 2=REJECTED)
-        //    - bytes 24-31: padding (zerouri)
-        // 3. Procesează comenzile din stdin până la EOF cu RandomAccessFile:
-        //    - READ idx       → seek(idx * RECORD_SIZE), citește și afișează înregistrarea
-        //    - UPDATE idx ST  → seek(idx * RECORD_SIZE + 23), scrie noul status (0/1/2)
-        //                       afișează "Updated [idx]: STATUS"
-        //    - PRINT_ALL      → citește și afișează toate înregistrările
-        //
-        // Format linie output:
-        //   [idx] id=<id> data=<data> tip=<CREDIT|DEBIT> suma=<suma:.2f> RON status=<STATUS>
+    public static void main(String[] args) throws Exception{
+        Scanner scanner = new Scanner(System.in);
+        RegistruBinarService service = new RegistruBinarService();
 
-        System.out.println("TODO: implementează exercițiul 2");
+        int n = scanner.nextInt();
+        List<InregistrareTranzactie> tranzactii = new ArrayList<>();
+
+        for (int i = 0; i < n; i++){
+            int id = scanner.nextInt();
+            double suma = scanner.nextDouble();
+            String data = scanner.next();
+            TipTranzactie tip = TipTranzactie.valueOf(scanner.next());
+
+            tranzactii.add(new InregistrareTranzactie(id, suma, data, tip, StatusTranzactie.PENDING));
+        }
+
+        service.scrieInitial(tranzactii, OUTPUT_FILE);
+
+        while (scanner.hasNext()){
+            String comanda = scanner.next();
+
+            if (comanda.equals("READ")){
+                int idx = scanner.nextInt();
+
+                InregistrareTranzactie tranzactie = service.citeste(OUTPUT_FILE, idx);
+                System.out.println(tranzactie.format(idx));
+            }
+            else if (comanda.equals("UPDATE")){
+                int idx = scanner.nextInt();
+                StatusTranzactie status = StatusTranzactie.valueOf(scanner.next());
+
+                service.actualizeazaStatus(OUTPUT_FILE, idx, status);
+                System.out.println("Updated [" + idx + "]: " + status);
+            }
+            else if (comanda.equals("PRINT_ALL")){
+                for (int idx = 0; idx < n; idx++){
+                    InregistrareTranzactie tranzactie = service.citeste(OUTPUT_FILE, idx);
+                    System.out.println(tranzactie.format(idx));
+                }
+            }
+        }
     }
 }
