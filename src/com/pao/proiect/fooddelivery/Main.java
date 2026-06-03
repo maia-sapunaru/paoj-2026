@@ -1,5 +1,5 @@
 package com.pao.proiect.fooddelivery;
-
+import com.pao.proiect.fooddelivery.util.SchemaInitializer;
 import com.pao.proiect.fooddelivery.exception.NotFoundException;
 import com.pao.proiect.fooddelivery.exception.MenuItemUnavailableException;
 import com.pao.proiect.fooddelivery.model.Client;
@@ -20,6 +20,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        SchemaInitializer.initializeSchema();
         UserService userService = UserService.getInstance();
         RestaurantService restaurantService = RestaurantService.getInstance();
         OrderService orderService = OrderService.getInstance();
@@ -151,5 +152,19 @@ public class Main {
         System.out.println("\nActualizare status comanda 1 la DELIVERED");
         orderService.updateOrderStatus(1, OrderStatus.DELIVERED);
         System.out.println(orderService.findOrderById(1));
+        System.out.println("\nJOIN 1: comenzi cu client si restaurant");
+        for (String line : orderService.getOrdersWithClientAndRestaurantFromDb()) {
+            System.out.println(line);
+        }
+
+        System.out.println("\nJOIN 2: produse comandate cu restaurant");
+        for (String line : orderService.getOrderItemsDetailsFromDb()) {
+            System.out.println(line);
+        }
+
+        System.out.println("\nJOIN 3: comenzi active cu sofer");
+        for (String line : orderService.getActiveOrdersWithDriverFromDb()) {
+            System.out.println(line);
+        }
     }
 }
