@@ -14,7 +14,6 @@ Structura pe care o construiești (`DatabaseConnection` Singleton, interfață g
 ---
 
 ## Import din exercițiul 1
-
 ```java
 import com.pao.laboratory14.exercise1.TipBilet;
 ```
