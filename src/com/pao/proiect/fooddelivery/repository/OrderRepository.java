@@ -1,6 +1,7 @@
 package com.pao.proiect.fooddelivery.repository;
 
 import com.pao.proiect.fooddelivery.model.*;
+import com.pao.proiect.fooddelivery.model.Driver;
 import com.pao.proiect.fooddelivery.util.DatabaseConnection;
 
 import java.sql.*;
@@ -82,12 +83,118 @@ public class OrderRepository implements Repository<Order, Integer> {
 
     @Override
     public Optional<Order> findById(Integer id) {
+        String sql = """
+                SELECT o.id, o.status, o.created_at,
+                       c.id AS client_id, c.name AS client_name, c.phone AS client_phone,
+                       c.city AS client_city, c.street AS client_street,
+                       c.building AS client_building, c.details AS client_details,
+                       r.id AS restaurant_id, r.name AS restaurant_name,
+                       r.address AS restaurant_address, r.category AS restaurant_category,
+                       d.id AS driver_id, d.name AS driver_name,
+                       d.phone AS driver_phone, d.vehicle_number AS driver_vehicle,
+                       d.available AS driver_available, d.rating AS driver_rating
+                FROM orders o
+                JOIN clients c ON o.client_id = c.id
+                JOIN restaurants r ON o.restaurant_id = r.id
+                LEFT JOIN drivers d ON o.driver_id = d.id
+                WHERE o.id = ?
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapOrderWithoutItems(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not find order by id", e);
+        }
+
         return Optional.empty();
     }
 
     @Override
     public List<Order> findAll() {
-        return new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
+
+        String sql = """
+                SELECT o.id, o.status, o.created_at,
+                       c.id AS client_id, c.name AS client_name, c.phone AS client_phone,
+                       c.city AS client_city, c.street AS client_street,
+                       c.building AS client_building, c.details AS client_details,
+                       r.id AS restaurant_id, r.name AS restaurant_name,
+                       r.address AS restaurant_address, r.category AS restaurant_category,
+                       d.id AS driver_id, d.name AS driver_name,
+                       d.phone AS driver_phone, d.vehicle_number AS driver_vehicle,
+                       d.available AS driver_available, d.rating AS driver_rating
+                FROM orders o
+                JOIN clients c ON o.client_id = c.id
+                JOIN restaurants r ON o.restaurant_id = r.id
+                LEFT JOIN drivers d ON o.driver_id = d.id
+                ORDER BY o.id
+                """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet rs = statement.executeQuery()) {
+
+            while (rs.next()) {
+                orders.add(mapOrderWithoutItems(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Could not find all orders", e);
+        }
+
+        return orders;
+    }
+
+    private Order mapOrderWithoutItems(ResultSet rs) throws SQLException {
+        DeliveryAddress address = new DeliveryAddress(
+                rs.getString("client_city"),
+                rs.getString("client_street"),
+                rs.getString("client_building"),
+                rs.getString("client_details")
+        );
+
+        Client client = new Client(
+                rs.getInt("client_id"),
+                rs.getString("client_name"),
+                rs.getString("client_phone"),
+                address
+        );
+
+        Restaurant restaurant = new Restaurant(
+                rs.getInt("restaurant_id"),
+                rs.getString("restaurant_name"),
+                rs.getString("restaurant_address"),
+                RestaurantCategory.valueOf(rs.getString("restaurant_category"))
+        );
+
+        Driver driver = null;
+        int driverId = rs.getInt("driver_id");
+
+        if (!rs.wasNull()) {
+            driver = new Driver(
+                    driverId,
+                    rs.getString("driver_name"),
+                    rs.getString("driver_phone"),
+                    rs.getString("driver_vehicle"),
+                    rs.getInt("driver_available") == 1,
+                    rs.getDouble("driver_rating")
+            );
+        }
+
+        Order order = new Order(
+                rs.getInt("id"),
+                client,
+                restaurant
+        );
+
+        order.setDriver(driver);
+        order.setStatus(OrderStatus.valueOf(rs.getString("status")));
+
+        return order;
     }
 
     @Override
