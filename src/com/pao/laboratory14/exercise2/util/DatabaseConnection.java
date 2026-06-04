@@ -34,6 +34,9 @@ public class DatabaseConnection {
         String user = props.getProperty("db.user", "");
         String password = props.getProperty("db.password", "");
 
+        // creează folderul output dacă nu există
+        new java.io.File("output").mkdirs();
+
         this.connection = DriverManager.getConnection(
                 url,
                 user,
